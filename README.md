@@ -235,10 +235,10 @@ python -m pytest tests/
 ### Captures d'Écran
 
 **Interface Web**
-![Interface principale](![image](https://github.com/user-attachments/assets/28f6cfa2-5bce-4ee6-891f-81c0a9545344))
+![image](https://github.com/user-attachments/assets/28f6cfa2-5bce-4ee6-891f-81c0a9545344)
 
 **Conversation de Réservation**
-![Exemple de conversation](![image](https://github.com/user-attachments/assets/2fbf446d-d368-4ef7-8905-94e8bad39f9d))
+![image](https://github.com/user-attachments/assets/2fbf446d-d368-4ef7-8905-94e8bad39f9d)
 
 ### Vidéo de Démonstration
 🎥 [Voir la démonstration complète](https://drive.google.com/file/d/1wgiyWJ8V1RJG6IzpQBkWHjlvRIIkxQNh/view?usp=sharing)
