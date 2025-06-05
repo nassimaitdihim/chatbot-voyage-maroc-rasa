@@ -235,9 +235,17 @@ python -m pytest tests/
 ### Captures d'Écran
 
 **Interface Web**
+
+<br>
+
 <img src="https://github.com/user-attachments/assets/28f6cfa2-5bce-4ee6-891f-81c0a9545344" alt="Interface Web" width="600">
 
+<br><br>
+
 **Conversation de Réservation**
+
+<br>
+
 <img src="https://github.com/user-attachments/assets/2fbf446d-d368-4ef7-8905-94e8bad39f9d" alt="Conversation de Réservation" width="500">
 
 ### Vidéo de Démonstration
