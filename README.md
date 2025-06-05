@@ -328,13 +328,6 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 - [Amadeus](https://developers.amadeus.com/) pour l'API des vols
 - [Booking.com](https://www.booking.com/) pour l'API des hôtels
 - La communauté open source
-
-## 📞 Support
-
-- 📧 Email: support@votre-agence.ma
-- 💬 Issues: [GitHub Issues](https://github.com/votre-username/chatbot-voyage-maroc/issues)
-- 📖 Documentation: [Wiki](https://github.com/votre-username/chatbot-voyage-maroc/wiki)
-
 ---
 
 **Développé avec ❤️ pour les voyageurs marocains**
