@@ -238,7 +238,7 @@ python -m pytest tests/
 
 <br>
 
-<img src="https://github.com/user-attachments/assets/28f6cfa2-5bce-4ee6-891f-81c0a9545344" alt="Interface Web" width="600">
+<img src="https://github.com/user-attachments/assets/b036cd88-5ae2-49cf-8fbc-0fc726ed4d02" alt="Interface Web" width="600">
 
 <br><br>
 
@@ -246,7 +246,7 @@ python -m pytest tests/
 
 <br>
 
-<img src="https://github.com/user-attachments/assets/2fbf446d-d368-4ef7-8905-94e8bad39f9d" alt="Conversation de Réservation" width="500">
+<img src="https://github.com/user-attachments/assets/c69203f0-c01e-4963-a781-25ebfc515c54" alt="Conversation de Réservation" width="500">
 
 ### Vidéo de Démonstration
 🎥 [Voir la démonstration complète](https://drive.google.com/file/d/1wgiyWJ8V1RJG6IzpQBkWHjlvRIIkxQNh/view?usp=sharing)
