@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>وكالة السفر المغربية - المساعد الذكي</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            direction: rtl;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 450px;
+            height: 600px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .chat-header h1 {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .chat-header p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 12px;
+            height: 12px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8fafc;
+            scrollbar-width: thin;
+            scrollbar-color: #e2e8f0 transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 2px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-content {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            font-size: 0.95em;
+        }
+
+        .message.bot .message-content {
+            background: white;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .avatar.bot {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .avatar.user {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 18px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 15px;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dots span {
+            width: 6px;
+            height: 6px;
+            background: #9ca3af;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+        .chat-input {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background: #f3f4f6;
+            padding: 8px;
+            border-radius: 25px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .input-container:focus-within {
+            border-color: #4f46e5;
+            background: white;
+        }
+
+        .input-field {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 8px 12px;
+            font-size: 0.95em;
+            outline: none;
+            color: #374151;
+        }
+
+        .input-field::placeholder {
+            color: #9ca3af;
+        }
+
+        .send-button {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+        }
+
+        .send-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+        }
+
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .quick-action {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            padding: 8px 14px;
+            font-size: 0.85em;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .quick-action:hover {
+            background: #4f46e5;
+            color: white;
+            border-color: #4f46e5;
+        }
+
+        .error-message {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .connection-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 0.8em;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .chat-container {
+                height: 100vh;
+                max-height: 100vh;
+                border-radius: 0;
+            }
+            
+            .chat-header {
+                padding: 15px;
+            }
+            
+            .chat-messages {
+                padding: 15px;
+            }
+            
+            .chat-input {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="status-indicator"></div>
+            <div class="connection-status">متصل</div>
+            <h1><i class="fas fa-plane"></i> وكالة السفر المغربية</h1>
+            <p>المساعد الذكي للحجوزات</p>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+                <div class="avatar bot">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-content">
+                    مرحباً بك في وكالة السفر المغربية! 🇲🇦<br><br>
+                    أنا مساعدك الذكي وسأساعدك في:<br>
+                    • حجز تذاكر الطيران ✈️<br>
+                    • حجز الفنادق 🏨<br>
+                    • تعديل الحجوزات 🔄<br>
+                    • الاستفسارات العامة 💬<br><br>
+                    كيف يمكنني مساعدتك اليوم؟
+                </div>
+            </div>
+            
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-input">
+            <div class="input-container">
+                <input type="text" class="input-field" id="messageInput" placeholder="اكتب رسالتك هنا..." autocomplete="off">
+                <button class="send-button" id="sendButton">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            
+            <div class="quick-actions">
+                <div class="quick-action" onclick="sendQuickMessage('أريد حجز رحلة')">
+                    <i class="fas fa-plane"></i> حجز رحلة
+                </div>
+                <div class="quick-action" onclick="sendQuickMessage('أريد حجز فندق')">
+                    <i class="fas fa-hotel"></i> حجز فندق
+                </div>
+                <div class="quick-action" onclick="sendQuickMessage('أحتاج مساعدة')">
+                    <i class="fas fa-question-circle"></i> مساعدة
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class ChatInterface {
+            constructor() {
+                this.sessionId = 'web_user_' + Math.random().toString(36).substr(2, 9);
+                this.chatMessages = document.getElementById('chatMessages');
+                this.messageInput = document.getElementById('messageInput');
+                this.sendButton = document.getElementById('sendButton');
+                this.typingIndicator = document.getElementById('typingIndicator');
+                this.isConnected = false;
+                
+                this.initializeEventListeners();
+                this.checkConnection();
+            }
+
+            initializeEventListeners() {
+                this.sendButton.addEventListener('click', () => this.sendMessage());
+                this.messageInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.sendMessage();
+                });
+                this.messageInput.addEventListener('input', () => {
+                    this.sendButton.disabled = !this.messageInput.value.trim();
+                });
+            }
+
+            async checkConnection() {
+                try {
+                    const response = await fetch('http://localhost:5005/status');
+                    this.isConnected = response.ok;
+                    this.updateConnectionStatus();
+                } catch (error) {
+                    this.isConnected = false;
+                    this.updateConnectionStatus();
+                    this.showError('لا يمكن الاتصال بالخادم. تأكد من تشغيل Rasa.');
+                }
+            }
+
+            updateConnectionStatus() {
+                const statusElement = document.querySelector('.connection-status');
+                const statusIndicator = document.querySelector('.status-indicator');
+                
+                if (this.isConnected) {
+                    statusElement.textContent = 'متصل';
+                    statusIndicator.style.background = '#10b981';
+                } else {
+                    statusElement.textContent = 'غير متصل';
+                    statusIndicator.style.background = '#ef4444';
+                }
+            }
+
+            showError(message) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+                this.chatMessages.appendChild(errorDiv);
+                this.scrollToBottom();
+                
+                setTimeout(() => errorDiv.remove(), 5000);
+            }
+
+            showTyping() {
+                this.typingIndicator.style.display = 'block';
+                this.scrollToBottom();
+            }
+
+            hideTyping() {
+                this.typingIndicator.style.display = 'none';
+            }
+
+            addMessage(content, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+                
+                messageDiv.innerHTML = `
+                    <div class="avatar ${isUser ? 'user' : 'bot'}">
+                        <i class="fas fa-${isUser ? 'user' : 'robot'}"></i>
+                    </div>
+                    <div class="message-content">${content}</div>
+                `;
+                
+                this.chatMessages.insertBefore(messageDiv, this.typingIndicator);
+                this.scrollToBottom();
+            }
+
+            scrollToBottom() {
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+
+            async sendMessage(message = null) {
+                const text = message || this.messageInput.value.trim();
+                if (!text) return;
+
+                if (!message) {
+                    this.messageInput.value = '';
+                    this.sendButton.disabled = true;
+                }
+
+                this.addMessage(text, true);
+
+                if (!this.isConnected) {
+                    this.showError('لا يوجد اتصال بالخادم. جاري المحاولة مرة أخرى...');
+                    await this.checkConnection();
+                    if (!this.isConnected) return;
+                }
+
+                this.showTyping();
+
+                try {
+                    const response = await fetch('http://localhost:5005/webhooks/rest/webhook', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            sender: this.sessionId,
+                            message: text
+                        }),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`خطأ في الخادم: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    
+                    this.hideTyping();
+
+                    if (data && data.length > 0) {
+                        data.forEach(response => {
+                            this.addMessage(response.text);
+                        });
+                    } else {
+                        this.addMessage('عذراً، لم أتمكن من فهم طلبك. هل يمكنك إعادة صياغته؟');
+                    }
+
+                } catch (error) {
+                    this.hideTyping();
+                    this.showError(`خطأ في الإرسال: ${error.message}`);
+                    this.isConnected = false;
+                    this.updateConnectionStatus();
+                }
+            }
+        }
+
+        // Initialize chat interface
+        const chat = new ChatInterface();
+
+        // Global function for quick actions
+        function sendQuickMessage(message) {
+            chat.sendMessage(message);
+        }
+    </script>
+</body>
+</html>
